@@ -42,6 +42,7 @@ local icons = {
 		[icopath.."ability_thunderbolt"] = true,
 		[icopath.."ability_warrior_revenge"] = true,
 		[icopath.."spell_nature_bloodlust"] = true,
+		[icopath.."ability_whirlwind"] = true,
 	},
 	["rogue"] = {
 		[icopath.."Ability_Sap"] = true,
@@ -696,6 +697,7 @@ function MPOWA:Remove()
 			end
 		end
 		self.SAVE = table.copy(newSave)
+		--self.Save = newSave
 		self.frames = table.copy(newFrames)
 		newSave = nil
 		newFrames = nil
