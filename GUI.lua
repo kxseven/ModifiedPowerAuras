@@ -491,6 +491,7 @@ end
 local blendModes = {"BLEND", "DISABLE", "ALPHAKEY", "ADD", "MOD"}
 function MPOWA:ApplyConfig(i)
 	local val = self.SAVE[i]
+	if not val then return end
 	self.frames[i][2]:SetTexture(val["texture"])
 	self.frames[i][2]:SetBlendMode(blendModes[val["blendmode"]])
 	self.frames[i][1]:SetAlpha(val["alpha"])
@@ -533,7 +534,7 @@ function MPOWA:ApplyDynamicGroup(i)
 							grp[cat] = self:GetDuration(self.active[cat], cat)
 						else
 							time = self:GetCooldown(va["buffname"]) or 0
-							if (self.NeedUpdate[cat] and not self.active[cat] and time>0) then
+							if (self.NeedUpdate[cat] and not self.active[cat] and (time>0 or not va["cooldown"])) then
 								grp[cat] = time
 							end
 						end 
@@ -569,7 +570,7 @@ function MPOWA:ApplyDynamicGroup(i)
 			end
 		else
 			for cat, va in pairs(self.SAVE) do
-				if self.frames[cat] and (tnbr(va["groupnumber"])==i or cat==i) and ((self.active[cat] and not self.NeedUpdate[cat]) or (self.NeedUpdate[cat] and not self.active[cat] and (self:GetCooldown(va["buffname"]) or 0)>0) or va["test"] or self.testAll) then
+				if self.frames[cat] and (tnbr(va["groupnumber"])==i or cat==i) and (self.active[cat] and not self.NeedUpdate[cat]) or (self.NeedUpdate[cat] and not self.active[cat] and (((self:GetCooldown(va["buffname"]) or 0)>0) or not va["cooldown"]) or va["test"] or self.testAll) then
 					self.frames[cat][1]:ClearAllPoints()
 					if val["dynamicorientation"] == 1 then
 						self.frames[cat][1]:SetPoint("TOPLEFT", self.frames[i][5], "TOPLEFT", inc*spacing, 0)
@@ -628,7 +629,7 @@ function MPOWA:ApplyAttributesToButton(i, button)
 		p = i
 		bool = true
 	end
-	if not _G("ConfigButton"..p) then return end
+	if not _G("ConfigButton"..p) or not self.SAVE[i] then return end
 	button:ClearAllPoints()
 	button:SetPoint("TOPLEFT",MPowa_ButtonContainer,"TOPLEFT",42*(p-1)+6 - floor((p-1)/7)*7*42,-11-floor((p-1)/7)*41)
 	button:SetID(i)
@@ -754,6 +755,7 @@ function MPOWA:Edit()
 	if ConfigButton1 then
 		local coeff = (self.Page - 1)*49
 		self.CurEdit = self.selected+coeff
+		if not self.SAVE[self.CurEdit] then return end
 		for i=1, self.NumBuffs do
 			if self.frames[i] then
 				self.frames[i][1]:EnableMouse(false)
@@ -1239,17 +1241,21 @@ function MPOWA:TestAll()
 		if self.testAll then
 			self.testAll = false
 			for i=1, self.NumBuffs do
-				if not self.active[i] then
-					MPOWA:ApplyConfig(i)
-					_G("TextureFrame"..i):Hide()
+				if self.SAVE[i] and self.SAVE[i]["used"] then
+					if not self.active[i] then
+						MPOWA:ApplyConfig(i)
+						_G("TextureFrame"..i):Hide()
+					end
+					self.SAVE[i]["test"] = false
 				end
-				self.SAVE[i]["test"] = false
 			end
 		else
 			self.testAll = true
 			for i=1, self.NumBuffs do
-				MPOWA:ApplyConfig(i)
-				_G("TextureFrame"..i):Show()
+				if self.SAVE[i] and self.SAVE[i]["used"] then
+					MPOWA:ApplyConfig(i)
+					_G("TextureFrame"..i):Show()
+				end
 			end
 		end
 	end
