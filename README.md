@@ -1,48 +1,43 @@
-# Modified Power Auras (MPOWA) #
+# ModifiedPowerAurasContinued
 
-### What is Modified Power Auras? ###
+This is continuation of this work:
 
-Modified Power Auras is the advanced version of the AddOn Power Auras. It is a lot more powerful and provides every possible function that could be backported from cataclysm. Plus it provides some custom features that are very helpful.
+https://github.com/Geigerkind/ModifiedPowerAuras
 
+from @Geigerkind
 
-### What are the advantages of Modified Power Auras? ###
+Many thanks to original developer of Power Auras as well as the creator of Modified Power Auras.
 
-* Use Icons instead of symbols
-* More performant
-* Show stacks of auras
-* Show double procs (Holy strength)
-* Show **enemy buffs and debuffs**
-* Show your buffs and debuffs
-* Show cooldown on trinkets or abilities
-* Customize your aura and its position on the whole screen
-* Use a lot new conditions to show/hide auras
-* Play a sound if a aura is applied or fades
-* Have some nice animations  
-* Group them as they appear  
+ModifedPowerAuras (Mpowa) is a great vanilla World of Warcraft (WoW) addon, intended to show icons and auras
+on screen when certain conditions are met, IE buff or debuff present, ability is on cooldown and so on, 
+but it falls short in one important aspect: showing aura when action or spell is available, in range 
+and ready to be casted/performed.
 
+Consider the case of the Judgement spell, we are tanking or DPS-ing and we want to have an aura show us 
+when the spell is ready to be casted (we have active Seal and it's not on cooldown), target is in range 
+and target is an enemy. Original Mpowa will have only one check: if spell is on a cooldown. It means that 
+(Inverted On Cooldown) aura will be shown even if you don't have a Seal active, you are not targeting 
+anything or targeting friendly or dead target or targeting an enemy out of range. Instead of performing 
+check on the spell book only, we have to do additional checks, some of them on the Action Bar slots. In 
+order to identify which Action Bar slot we are interested in we compare textures from the spell book with 
+textures on the Action Bar until we find a match. For this reason, spell you are interested in must be placed on 
+one of the Action bars. Checks for spells can be performed on every update which is preferred option 
+as you can move spells freely on the Action Bars and Mpowa will find it, or if you have performance 
+problems you can choose to uncheck Auto Update but then you have to reset UI by issuing RESETUI command
+every time you move or create another aura that tracks if spell is available, or check Auto Update 
+briefly and then uncheck it again. I don't see any performance hit on my computer from using Auto Update
+feature, but your millage may vary.
 
-### Installing Instructions ###
+~~I have tried to preserve most of previous functionality so instead of having Action Available button you
+have to check two boxes, "Ability not ready" which is original "On cooldown" checkbox with additional 
+functionality like range clipping and making sure that other cast requirements are met (in case of Judgement
+that you have Seal active) and you also need to check "Invert" button to show when Ability is ready as 
+opposed to not ready.~~
 
-* Download the AddOn [here](https://github.com/Geigerkind/ModifiedPowerAuras/releases)
-* Rename the unziped folder to "ModifiedPowerAuras"
-* Place the folder into your AddOn directory in your World of Warcraft folder
-* Start the game
-* Type in **/mpowa** to open the configuration frame
-* Enjoy
-
-
-
-#**Support me!**#   
-1. [report](https://github.com/Geigerkind/ModifiedPowerAuras/issues) bugs that you found.
-2. Suggest improvements in this thread. 
-3. You can also [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=57SWBZ3B7RTTQ) for my projects if you like or consider becoming an [patreon](https://www.patreon.com/legacylogs).
-
-
-### How does it look like? ###
-
-**All frames opened (Profile/EditAura/IconFrame):**  
-![SG2B0jW.jpg](http://i.imgur.com/SG2B0jW.jpg)
-
-
-**Auras on testmode:**  
-![Testmode](http://i.imgur.com/0CZScUt.png)
+I also made some changes in UI inconsistencies, like need to do double negative (Invert and On cooldown) to 
+show when ability is ready to be performed, which is now simply an "Ability available" checkbox. There is also 
+a checkbox "Enemy only", which will ensure that you are targeting an enemy in order to cast harmful spells, 
+or you can uncheck this if you are using Mpowa for beneficial spells, like Power Word: Shield for example. The
+last addition is "Auto Update" check box, which will be checked automatically when you check "Ability available" 
+box. If you prefer to do spell finding manually, you can uncheck this box but then if you move your spell to a 
+new slot or create a new aura that requires spell tracking functionality you will have to reset UI.

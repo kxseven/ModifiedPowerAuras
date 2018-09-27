@@ -7,13 +7,19 @@ function MPOWA:CreateSave(i)
 		size = 0.75,
 		x = 0,
 		y = -30,
-		buffname = "",
+		buffname = " ",
 		isdebuff = false,
 		timer = false,
 		inverse = false,
 		used = false,
 		test = false,
 		cooldown = false,
+		abilityavailable=false,
+		enemyonly = false,
+		stance = false,
+		stanceslot=1,
+		autoupdate = false,
+		spellslot = 1,
 		enemytarget = false,
 		friendlytarget = false,
 		stacks = ">=0",
@@ -106,7 +112,29 @@ function MPOWA:Init()
 				self.auras[val["buffname"]] = {}
 			end
 			tinsert(self.auras[val["buffname"]], cat)
-			
+
+			if not val["spellslot"] then
+				self.SAVE[cat]["spellslot"] = 1
+			end
+
+			if not val["stanceslot"] then
+				self.SAVE[cat]["stanceslot"] = 1
+			end
+
+			if not val["stance"] then
+				self.SAVE[cat]["stance"] = false
+			end
+
+			if not val["abilityavailable"] then
+				self.SAVE[cat]["abilityavailable"] = false
+			end
+
+			if not val["enemyonly"] then
+				self.SAVE[cat]["enemyonly"] = false
+			end
+
+			MPOWA:SpellSlot(val)
+
 			if (val["inverse"] or val["cooldown"]) and val["buffname"] ~= "unitpower" then
 				self.NeedUpdate[cat] = true
 			end
@@ -177,6 +205,9 @@ function MPOWA:Init()
 			if not val["timerfontsize"] then
 				self.SAVE[cat]["timerfontsize"] = 1
 			end
+			if not val["spellslot"] then
+				self.SAVE[cat]["spellslot"] = 1
+			end
 			
 			self:CreateIcon(cat, cat)
 			self:ApplyConfig(cat)
@@ -246,9 +277,61 @@ function MPOWA:Init()
 			self.SAVE[cat] = nil
 		end
 	end
+
 	self.testAll = false
 end
-
+function MPOWA:SpellSlot(val)
+	if val["buffname"] and val["spellslot"] then
+		val["spellslot"] = 1
+		local spellIndex = 1
+		while true do
+			local name, rank = GetSpellName(spellIndex, "spell")
+			if (not name) or strfind(strlower(name), strlower(val["buffname"])) or name==val["buffname"] then 
+				break
+			end
+			if spellIndex > 1000 then
+				spellIndex=0
+				break-- Lets give up at this point
+			end
+			spellIndex = spellIndex + 1
+		end
+		local spellTexture = GetSpellTexture(spellIndex, "spell")
+		for i=1, 120 do
+			local slotTexture = GetActionTexture(i)
+			if slotTexture == spellTexture then
+				val["spellslot"] = i
+				return
+				end
+			end
+		return
+	end
+end
+function MPOWA:StanceSlot(val)
+	if self.SAVE[self.CurEdit]["stance"] then
+		MPOWA.SAVE[MPOWA.CurEdit]["stanceslot"] = 0;
+		for i=1,6 do
+			local icon, name, active, castable = GetShapeshiftFormInfo(i);
+			if active then
+				MPOWA.SAVE[MPOWA.CurEdit]["stanceslot"] = i
+				MPOWA.SAVE[MPOWA.CurEdit]["buffname"] = name
+				MPowa_ConfigFrame_Container_1_2_Editbox:SetText(name)
+				--DEFAULT_CHAT_FRAME:AddMessage("Action Bar= " .. MPOWA.SAVE[MPOWA.CurEdit]["stanceslot"])
+			end
+		end
+	end
+	--self:Iterate("player")
+	--self:Push("Windfury", "player", 42, false, "Windfury")
+	return MPOWA.SAVE[MPOWA.CurEdit]["stanceslot"]
+end
+function MPOWA:GetStanceSlot(val)
+	for i=1,6 do
+		local icon, name, active, castable = GetShapeshiftFormInfo(i);
+		if active then
+			return i
+		end
+	end
+	return 0
+end
 --------------- Post Init --------------------------
 
 MPOWA:SetScript("OnUpdate", function() MPOWA:OnUpdate(arg1) end)

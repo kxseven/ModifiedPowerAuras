@@ -342,7 +342,7 @@
 				this:StopMovingOrSizing()
 			</OnMouseUp>
 			<OnLoad>
-				MPowa_MainFrame_HEAD:SetText("Modified Power Auras - Build: "..MPOWA.Build)
+				MPowa_MainFrame_HEAD:SetText("Modified Power Auras")
 				MPowa_MainFrame_Pages:SetText("1/10")
 			</OnLoad>
 		</Scripts>
@@ -508,7 +508,7 @@
 	---------------------------------------------CONFIGURATION FRAME---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	<Frame name="MPowa_ConfigFrame" movable="true" parent="MPowa_MainFrame" frameStrata="HIGH" hidden="true" enableMouse="true" enableKeyboard="true">
-		<Size x="321" y="450" />
+		<Size x="321" y="510" />
 		<Anchors>
 			<Anchor point="RIGHT" relativeTo="MPowa_MainFrame" relativePoint="LEFT" />
         </Anchors>
@@ -546,8 +546,8 @@
 		</Layers>
 		<Scripts>
 			<OnLoad>
-				getglobal(this:GetName().."_HEAD"):SetText(MPOWA_CONFIGFRAME_NAME)
-			</OnLoad>
+        getglobal(this:GetName().."_HEAD"):SetText(MPOWA_CONFIGFRAME_NAME)
+      </OnLoad>
 			<OnKeyDown>
 				if IsShiftKeyDown() and IsAltKeyDown() then
 					MPowa_ConfigFrame_Container_1_Slider_PosX:SetValueStep(0.1)
@@ -574,7 +574,7 @@
 				</Scripts>
 			</Button>
 			<Frame name="$parent_Container">
-				<Size x="290" y="370" />
+				<Size x="290" y="400" />
 				<Anchors>
 					<Anchor point="BOTTOM">
 						<Offset x="0" y="15" />
@@ -909,6 +909,52 @@
 									</OnValueChanged>
 								</Scripts>
 							</Slider>
+              <Slider name="$parent_Slider_SpellSlot" inherits="MPowa_SliderTemplate" hidden="true">
+                <Anchors>
+                  <Anchor point="RIGHT" relativeTo="$parent_Slider_PosY" relativePoint="LEFT">
+                    <Offset x="-10" y="0" />
+                  </Anchor>
+                </Anchors>
+                <Scripts>
+                  <OnLoad>
+                    this.aide = MPOWA_SLIDER_SIZE_TOOLTIP
+                    this:SetMinMaxValues(1,120)
+                    this:SetValue(1)
+                    this:SetValueStep(1)
+                    getglobal(this:GetName().."Text"):SetText(MPOWA_SLIDER_SIZE)
+                    getglobal(this:GetName().."Low"):SetText("1")
+                    getglobal(this:GetName().."High"):SetText("120")
+                  </OnLoad>
+                  <OnValueChanged>
+                    if MPOWA.loaded then
+                      MPOWA:SliderChange("spellslot", this, MPOWA_SLIDER_SIZE)
+                    end
+                  </OnValueChanged>
+                </Scripts>
+              </Slider>
+              <Slider name="$parent_Slider_StanceSlot" inherits="MPowa_SliderTemplate" hidden="true">
+                <Anchors>
+                  <Anchor point="RIGHT" relativeTo="$parent_Slider_PosY" relativePoint="LEFT">
+                    <Offset x="-10" y="0" />
+                  </Anchor>
+                </Anchors>
+                <Scripts>
+                  <OnLoad>
+                    this.aide = MPOWA_SLIDER_SIZE_TOOLTIP
+                    this:SetMinMaxValues(1,12)
+                    this:SetValue(1)
+                    this:SetValueStep(1)
+                    getglobal(this:GetName().."Text"):SetText(MPOWA_SLIDER_SIZE)
+                    getglobal(this:GetName().."Low"):SetText("1")
+                    getglobal(this:GetName().."High"):SetText("12")
+                  </OnLoad>
+                  <OnValueChanged>
+                    if MPOWA.loaded then
+                    MPOWA:SliderChange("stanceslot", this, MPOWA_SLIDER_SIZE)
+                    end
+                  </OnValueChanged>
+                </Scripts>
+              </Slider>
 						</Frames>
 					</Frame>
 					<Frame name="$parent_1_2">
@@ -1225,7 +1271,7 @@
 									</Layer>
 								</Layers>
 							</EditBox>
-							<CheckButton name="$parent_Checkbutton_ShowCooldowns" inherits="MPowa_CheckTemplate">
+							<CheckButton name="$parent_Checkbutton_ShowCooldowns" inherits="MPowa_CheckTemplate" hidden="true">
 								<Anchors>
 									<Anchor point="TOPLEFT" relativeTo="$parent_Editbox" relativePoint="BOTTOMLEFT">
 										<Offset x="-10" y="-77" />
@@ -1237,19 +1283,78 @@
 										getglobal(this:GetName().."Text"):SetText(MPOWA_CHECKBUTTON_SHOWCOOLDOWN)
 									</OnLoad>
 									<OnClick>
-										if not MPOWA.SAVE[MPOWA.CurEdit]["cooldown"] then
-											MPOWA.NeedUpdate[MPOWA.CurEdit] = true
-										else
-											if not MPOWA.SAVE[MPOWA.CurEdit]["inverse"] then
-												MPOWA.NeedUpdate[MPOWA.CurEdit] = false
-											end
-											MPOWA.active[MPOWA.CurEdit] = false
-											MPOWA.frames[MPOWA.CurEdit][1]:Hide()
-										end
-										MPOWA:Checkbutton("cooldown")
-									</OnClick>
+                  </OnClick>
 								</Scripts>
 							</CheckButton>
+              <CheckButton name="$parent_Checkbutton_AbilityAvailable" inherits="MPowa_CheckTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_Editbox" relativePoint="BOTTOMLEFT">
+                    <Offset x="-10" y="-77" />
+                  </Anchor>
+                </Anchors>
+                <Scripts>
+                  <OnLoad>
+                    this.tooltipText = MPOWA_CHECKBUTTON_ABILITY_AVAILABLE_TOOLTIP
+                    getglobal(this:GetName().."Text"):SetText(MPOWA_CHECKBUTTON_ABILITY_AVAILABLE)
+                  </OnLoad>
+                  <OnClick>
+                    if not MPOWA.SAVE[MPOWA.CurEdit]["abilityavailable"] then
+                    MPOWA.NeedUpdate[MPOWA.CurEdit] = true
+                    else
+                    if not MPOWA.SAVE[MPOWA.CurEdit]["inverse"] then
+                    MPOWA.NeedUpdate[MPOWA.CurEdit] = false
+                    end
+                    MPOWA.active[MPOWA.CurEdit] = false
+                    MPOWA.frames[MPOWA.CurEdit][1]:Hide()
+                    end
+                    MPOWA:AbilityAvailableCheckbutton(this,"abilityavailable")
+                  </OnClick>
+                </Scripts>
+              </CheckButton>
+              <CheckButton name="$parent_Checkbutton_EnemyOnly" inherits="MPowa_CheckTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_Checkbutton_ShowCooldowns" relativePoint="BOTTOMLEFT">
+                    <Offset x="0" y="-65" />
+                  </Anchor>
+                </Anchors>
+                <Scripts>
+                  <OnLoad>
+                    this.tooltipText = MPOWA_CHECKBUTTON_ENEMYONLY_TOOLTIP
+                    getglobal(this:GetName().."Text"):SetText(MPOWA_CHECKBUTTON_ENEMYONLY)
+                    this.var = "enemyonly"
+                  </OnLoad>
+                  <OnClick>
+                    MPOWA:Checkbutton("enemyonly")
+                  </OnClick>
+                </Scripts>
+              </CheckButton>
+              <CheckButton name="$parent_Checkbutton_Stance" inherits="MPowa_CheckTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_Checkbutton_EnemyOnly" relativePoint="BOTTOMLEFT">
+                    <Offset x="0" y="11" />
+                  </Anchor>
+                </Anchors>
+                <Scripts>
+                  <OnLoad>
+                    this.tooltipText = MPOWA_CHECKBUTTON_STANCE_TOOLTIP
+                    getglobal(this:GetName().."Text"):SetText(MPOWA_CHECKBUTTON_STANCE)
+                    this.var = "stance"
+                  </OnLoad>
+                  <OnClick>
+                    if not MPOWA.SAVE[MPOWA.CurEdit]["stance"] then
+                    MPOWA.NeedUpdate[MPOWA.CurEdit] = true
+                    else
+                    if not MPOWA.SAVE[MPOWA.CurEdit]["inverse"] then
+                    MPOWA.NeedUpdate[MPOWA.CurEdit] = false
+                    end
+                    MPOWA.active[MPOWA.CurEdit] = false
+                    MPOWA.frames[MPOWA.CurEdit][1]:Hide()
+                    end
+                    MPOWA:StanceCheckbutton(this,"stance")
+                    MPOWA:StanceSlot(this)
+                  </OnClick>
+                </Scripts>
+              </CheckButton>
 							<CheckButton name="$parent_Checkbutton_EnemyTarget" inherits="MPowa_CheckTemplate">
 								<Anchors>
 									<Anchor point="TOPLEFT" relativeTo="$parent_Checkbutton_ShowCooldowns" relativePoint="BOTTOMLEFT">
@@ -1258,9 +1363,9 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										this.tooltipText = MPOWA_CHECKBUTTON_ENEMYTARGET_TOOLTIP
-										getglobal(this:GetName().."Text"):SetText(MPOWA_CHECKBUTTON_ENEMYTARGET)
-									</OnLoad>
+                    this.tooltipText = MPOWA_CHECKBUTTON_ENEMYTARGET_TOOLTIP
+                    getglobal(this:GetName().."Text"):SetText(MPOWA_CHECKBUTTON_ENEMYTARGET)
+                  </OnLoad>
 									<OnClick>
 										MPOWA:Checkbutton("enemytarget")
 										if MPowa_ConfigFrame_Container_1_2_Checkbutton_EnemyTarget:GetChecked() or MPowa_ConfigFrame_Container_1_2_Checkbutton_FriendlyTarget:GetChecked() then
@@ -1523,6 +1628,23 @@
 									</OnClick>
 								</Scripts>
 							</CheckButton>
+              <CheckButton name="$parent_Checkbutton_AutoUpdate" inherits="MPowa_CheckTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_Checkbutton_SecondSpecifier" relativePoint="BOTTOMLEFT">
+                    <Offset x="0" y="11" />
+                  </Anchor>
+                </Anchors>
+                <Scripts>
+                  <OnLoad>
+                    this.var = "autoupdate"
+                    this.tooltipText = MPOWA_CHECKBUTTON_AUTO_UPDATE_TOOLTIP
+                    getglobal(this:GetName().."Text"):SetText(MPOWA_CHECKBUTTON_AUTO_UPDATE)
+                  </OnLoad>
+                  <OnClick>
+                    MPOWA:Checkbutton("autoupdate")
+                  </OnClick>
+                </Scripts>
+              </CheckButton>
 						</Frames>
 					</Frame>
 					<Frame name="$parent_2" inherits="MPowa_ContainerTemplate" hidden="true">

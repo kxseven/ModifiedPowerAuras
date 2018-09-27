@@ -801,6 +801,8 @@ function MPOWA:Edit()
 		MPowa_ConfigFrame_Container_1_Colorpicker_SwatchBg.b = self.SAVE[self.CurEdit].icon_b or 1
 		MPowa_ConfigFrame_Container_1_Icon_Texture:SetVertexColor(self.SAVE[self.CurEdit].icon_r or 1, self.SAVE[self.CurEdit].icon_g or 1, self.SAVE[self.CurEdit].icon_b or 1)
 		MPowa_ConfigFrame_Container_2_Slider_Size:SetValue(tnbr(self.SAVE[self.CurEdit].fontsize))
+		MPowa_ConfigFrame_Container_1_Slider_SpellSlot:SetValue(tnbr(self.SAVE[self.CurEdit].spellslot))
+		MPowa_ConfigFrame_Container_1_Slider_StanceSlot:SetValue(tnbr(self.SAVE[self.CurEdit].stanceslot))
 		MPowa_ConfigFrame_Container_2_Slider_SizeText:SetText(MPOWA_SLIDER_SIZE.." "..self.SAVE[self.CurEdit].fontsize)
 		MPowa_ConfigFrame_Container_2_Slider_Opacity:SetValue(tnbr(self.SAVE[self.CurEdit].fontalpha))
 		MPowa_ConfigFrame_Container_2_Slider_OpacityText:SetText(MPOWA_SLIDER_OPACITY.." "..self.SAVE[self.CurEdit].fontalpha)
@@ -815,6 +817,10 @@ function MPOWA:Edit()
 		MPowa_ConfigFrame_Container_2_2_Checkbutton_Timer:SetChecked(self.SAVE[self.CurEdit].timer)
 		MPowa_ConfigFrame_Container_2_2_Checkbutton_Minutes:SetChecked(self.SAVE[self.CurEdit].minutes)
 		MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowCooldowns:SetChecked(self.SAVE[self.CurEdit].cooldown)
+		MPowa_ConfigFrame_Container_1_2_Checkbutton_AbilityAvailable:SetChecked(self.SAVE[self.CurEdit].abilityavailable)
+		MPowa_ConfigFrame_Container_1_2_Checkbutton_EnemyOnly:SetChecked(self.SAVE[self.CurEdit].enemyonly)
+		MPowa_ConfigFrame_Container_1_2_Checkbutton_Stance:SetChecked(self.SAVE[self.CurEdit].stance)
+		MPowa_ConfigFrame_Container_1_2_Checkbutton_AutoUpdate:SetChecked(self.SAVE[self.CurEdit].autoupdate)
 		MPowa_ConfigFrame_Container_1_2_Checkbutton_EnemyTarget:SetChecked(self.SAVE[self.CurEdit].enemytarget)
 		MPowa_ConfigFrame_Container_1_2_Checkbutton_FriendlyTarget:SetChecked(self.SAVE[self.CurEdit].friendlytarget)
 		MPowa_ConfigFrame_Container_1_2_Checkbutton_RaidMember:SetChecked(self.SAVE[self.CurEdit].raidgroupmember)
@@ -997,8 +1003,95 @@ function MPOWA:Checkbutton(var)
 		self:Iterate("player")
 		self:Iterate("target")
 	end
+	
 	self:ApplyConfig(self.CurEdit)
 end
+function MPOWA:AutoUpdateCheckbutton(obj,var)
+	if self.SAVE[self.CurEdit][var] then
+		self.SAVE[self.CurEdit][var] = false
+	else
+		self.SAVE[self.CurEdit][var] = true
+	end
+	
+	if self.SAVE[self.CurEdit]["test"] or self.testAll then
+		_G("TextureFrame"..self.CurEdit):Hide()
+		_G("TextureFrame"..self.CurEdit):Show()
+	else
+		self:Iterate("player")
+		self:Iterate("target")
+	end
+	if obj==MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowCooldowns then
+		--DEFAULT_CHAT_FRAME:AddMessage("test")
+		if self.SAVE[self.CurEdit][var] then
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_AutoUpdate:SetChecked(true)
+			self.SAVE[self.CurEdit]["autoupdate"]=true
+		else
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_AutoUpdate:SetChecked(false)
+			self.SAVE[self.CurEdit]["autoupdate"]=false
+		end
+	end
+	self:ApplyConfig(self.CurEdit)
+end
+function MPOWA:AbilityAvailableCheckbutton(obj,var)
+	if self.SAVE[self.CurEdit][var] then
+		self.SAVE[self.CurEdit][var] = false
+	else
+		self.SAVE[self.CurEdit][var] = true
+	end
+	
+	if self.SAVE[self.CurEdit]["test"] or self.testAll then
+		_G("TextureFrame"..self.CurEdit):Hide()
+		_G("TextureFrame"..self.CurEdit):Show()
+	else
+		self:Iterate("player")
+		self:Iterate("target")
+	end
+	if obj==MPowa_ConfigFrame_Container_1_2_Checkbutton_AbilityAvailable then
+		--DEFAULT_CHAT_FRAME:AddMessage("test")
+		if self.SAVE[self.CurEdit][var] then
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowCooldowns:SetChecked(true)
+			self.SAVE[self.CurEdit]["cooldown"]=true
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_AutoUpdate:SetChecked(true)
+			self.SAVE[self.CurEdit]["autoupdate"]=true
+		else
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowCooldowns:SetChecked(false)
+			self.SAVE[self.CurEdit]["cooldown"]=false
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_AutoUpdate:SetChecked(false)
+			self.SAVE[self.CurEdit]["autoupdate"]=false
+		end
+	end
+	self:ApplyConfig(self.CurEdit)
+end
+function MPOWA:StanceCheckbutton(obj,var)
+	if self.SAVE[self.CurEdit][var] then
+		self.SAVE[self.CurEdit][var] = false
+	else
+		self.SAVE[self.CurEdit][var] = true
+	end
+	
+	if self.SAVE[self.CurEdit]["test"] or self.testAll then
+		_G("TextureFrame"..self.CurEdit):Hide()
+		_G("TextureFrame"..self.CurEdit):Show()
+	else
+		self:Iterate("player")
+		self:Iterate("target")
+	end
+	if obj==MPowa_ConfigFrame_Container_1_2_Checkbutton_Stance then
+		if self.SAVE[self.CurEdit][var] then
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowCooldowns:SetChecked(true)
+			self.SAVE[self.CurEdit]["cooldown"]=true
+			--MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowIfNotActive:SetChecked(true)
+			--self.SAVE[self.CurEdit]["inverse"]=true
+		else
+			MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowCooldowns:SetChecked(false)
+			self.SAVE[self.CurEdit]["cooldown"]=false
+			--MPowa_ConfigFrame_Container_1_2_Checkbutton_ShowIfNotActive:SetChecked(false)
+			--self.SAVE[self.CurEdit]["inverse"]=false
+		end
+	end
+	self:ApplyConfig(self.CurEdit)
+end
+local enemyonlySlot
 
 function MPOWA:Checkbutton_FlashAnim()
 	if self.SAVE[self.CurEdit]["flashanim"] then

@@ -26,6 +26,7 @@ local GetInventoryItemLink = GetInventoryItemLink
 local GetContainerNumSlots = GetContainerNumSlots
 local GetSpellName = GetSpellName
 local UnitIsFriend = UnitIsFriend
+local Stance = Stance
 local UpdateTime, LastUpdate = 0.05, 0
 local path, duration, text, count, time
 
@@ -75,11 +76,83 @@ function MPOWA:OnUpdate(elapsed)
 								self.frames[cat][3]:Hide()
 							end
 						else
-							if path["inverse"] then
-								if duration > 0 then
-									self:FHide(cat)
+						---[[
+							if duration > 0 then
+								self:FHide(cat)
+							else
+								self:FShow(cat)
+							end
+								--]]
+							if path["abilityavailable"]then
+								local action_slot = path["spellslot"]
+								if path["autoupdate"] then
+									action_slot = self:GetSpellActionSlot(path["buffname"])
+								end
+								local inRange = IsActionInRange(action_slot)
+								local isUsable, notEnoughMana = IsUsableAction(action_slot)
+								if path["enemyonly"] then
+									if not path["inverse"] then
+										if inRange == 0 or not UnitCanAttack("player", "target") or UnitIsDead("target") or not isUsable then
+											self:FHide(cat)
+										end
+									else
+										if duration > 0 then
+											self:FShow(cat)
+										end
+										if not (inRange == 0) and UnitCanAttack("player", "target") and isUsable then
+											self:FHide(cat)
+										end
+									end
+										--[[
+										if not isUsable then
+											DEFAULT_CHAT_FRAME:AddMessage("Not Usable  " .. action_slot)
+										end
+										if inRange == 0 then
+											DEFAULT_CHAT_FRAME:AddMessage("Out of Range" .. action_slot)
+										else
+											DEFAULT_CHAT_FRAME:AddMessage("In Range" .. action_slot)
+										end
+										if not UnitCanAttack("player", "target") then
+											DEFAULT_CHAT_FRAME:AddMessage("Can't attack that target" .. action_slot)
+										end
+										if  UnitIsDead("target") then
+											DEFAULT_CHAT_FRAME:AddMessage("Unit is dead" .. action_slot)
+										end
+										--]]
+									--end
 								else
-									self:FShow(cat)
+									if inRange == 0 or not isUsable then
+										if not path["inverse"] then
+											self:FHide(cat)
+										else
+											self:FShow(cat)
+										end
+										--DEFAULT_CHAT_FRAME:AddMessage("Not available")
+									end
+								end
+								--[[
+								if duration > 0 then
+										self:FHide(cat)
+										--DEFAULT_CHAT_FRAME:AddMessage("Hide")
+									else
+										self:FShow(cat)
+								end
+								--]]
+							end
+							if path["inverse"] then
+								if not path["abilityavailable"]then
+									if duration > 0 then
+										self:FHide(cat)
+									else
+										self:FShow(cat)
+									end
+								end
+								if path["stance"] then
+									if MPOWA:GetStanceSlot(this)==path["stanceslot"] then
+										self:FHide(cat)
+									else
+										self:FShow(cat)
+									end
 								end
 							else
 								if path["secsleft"] then
@@ -89,7 +162,16 @@ function MPOWA:OnUpdate(elapsed)
 										self:FHide(cat)
 									end
 								else
-									if duration > 0 then
+									if not path["abilityavailable"]then
+										if duration > 0 then
+											self:FShow(cat)
+										else
+											self:FHide(cat)
+										end
+									end
+								end
+								if path["stance"] then
+									if MPOWA:GetStanceSlot(this)==path["stanceslot"] then
 										self:FShow(cat)
 									else
 										self:FHide(cat)
@@ -484,4 +566,15 @@ function MPOWA:IsStacks(count, id, kind)
 		end
 	end
 	return false
+end
+function MPOWA:GetSpellActionSlot(action_name)
+	local spellIndex = self:GetSpellSlot(action_name, "spell")
+	local spellTexture = GetSpellTexture(spellIndex, "spell")
+	for i=1, 120 do
+		local slotTexture = GetActionTexture(i)
+		if slotTexture == spellTexture then
+			return i
+			end
+		end
+	return 0
 end
