@@ -508,7 +508,7 @@
 	---------------------------------------------CONFIGURATION FRAME---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	<Frame name="MPowa_ConfigFrame" movable="true" parent="MPowa_MainFrame" frameStrata="HIGH" hidden="true" enableMouse="true" enableKeyboard="true">
-		<Size x="321" y="450" />
+		<Size x="350" y="450" />
 		<Anchors>
 			<Anchor point="RIGHT" relativeTo="MPowa_MainFrame" relativePoint="LEFT" />
         </Anchors>
@@ -768,7 +768,7 @@
 								</Scripts>
 							</Slider>
 							<EditBox name="$parent_Editbox_PosX" autoFocus="false" inherits="InputBoxTemplate">
-								<Size x="25" y="16" />
+								<Size x="50" y="16" />
 								<Anchors>
 									<Anchor point="TOPLEFT" relativeTo="$parent_Slider_PosX" relativePoint="TOPLEFT">
 										<Offset x="125" y="0" />
@@ -853,7 +853,7 @@
 								</Scripts>
 							</Slider>
 							<EditBox name="$parent_Editbox_PosY" autoFocus="false" inherits="InputBoxTemplate">
-								<Size x="25" y="16" />
+								<Size x="50" y="16" />
 								<Anchors>
 									<Anchor point="TOPLEFT" relativeTo="$parent_Slider_PosY" relativePoint="TOPLEFT">
 										<Offset x="125" y="0" />
@@ -2958,7 +2958,7 @@
 	---------------------------------------------ICON FRAME---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	<Frame name="MPowa_IconFrame" movable="true" parent="MPowa_ConfigFrame" frameStrata="HIGH" hidden="true" enableMouse="true" enableKeyboard="true">
-		<Size x="321" y="430" />
+		<Size x="350" y="430" />
 		<Anchors>
 			<Anchor point="RIGHT" relativeTo="MPowa_ConfigFrame" relativePoint="LEFT" />
         </Anchors>
