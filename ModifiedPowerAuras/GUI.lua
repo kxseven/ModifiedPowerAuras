@@ -43,6 +43,7 @@ local icons = {
 		[icopath.."ability_warrior_revenge"] = true,
 		[icopath.."spell_nature_bloodlust"] = true,
 		[icopath.."ability_whirlwind"] = true,
+		[icopath.."INV_Sword_05"] = true, -- Icon for Revenge ability
 	},
 	["rogue"] = {
 		[icopath.."Ability_Sap"] = true,

@@ -1,4 +1,8 @@
-# Modified Power Auras (MPOWA) #
+# Modified Power Auras (MPOWA) 
+
+This repo contains two separate AddOns;
+- the forked Modified Power Auras (MPOWA) project
+- the awesome ColorPickerPlus project from https://github.com/mrrosh/ColorPickerPlus which adds more useful color and has support for copy/paste of colors
 
 ### What is Modified Power Auras? ###
 
