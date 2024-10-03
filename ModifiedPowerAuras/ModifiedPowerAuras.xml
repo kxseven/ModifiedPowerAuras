@@ -1093,6 +1093,36 @@
 									</Layer>
 								</Layers>
 							</EditBox>
+
+							<Slider name="$parent_Slider_Stance" inherits="MPowa_SliderTemplate">
+								<Size x="70" y="10" />
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent_Editbox_Stacks" relativePoint="BOTTOMLEFT">
+										<Offset x="-4" y="-20" />
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										this.valuetext = {"Any", "Battle", "Defensive", "Berserker"}
+										this.aide = MPOWA_SLIDER_STANCE_TOOLTIP
+										this:SetMinMaxValues(1,4)
+										this:SetValue(1)
+										this:SetValueStep(1)
+										getglobal(this:GetName() .. "Text"):SetText(MPOWA_SLIDER_STANCE)
+										getglobal(this:GetName() .. "Low"):SetText("1")
+										getglobal(this:GetName() .. "High"):SetText("4")
+									</OnLoad>
+									<OnValueChanged>
+										if MPOWA.loaded then
+											if this:GetValue() then
+												MPOWA.SAVE[MPOWA.CurEdit]["stance"] = this:GetValue()
+												getglobal(this:GetName().."Text"):SetText(MPOWA_SLIDER_STANCE..this.valuetext[this:GetValue()])
+											end
+										end
+									</OnValueChanged>
+								</Scripts>
+							</Slider>
+
 							<EditBox name="$parent_Editbox_Player" autoFocus="false" inherits="InputBoxTemplate" hidden="true">
 								<Size x="65" y="16" />
 								<Anchors>
@@ -1140,7 +1170,7 @@
 							<EditBox name="$parent_Editbox_DebuffDuration" autoFocus="false" inherits="InputBoxTemplate">
 								<Size x="65" y="16" />
 								<Anchors>
-									<Anchor point="LEFT" relativeTo="$parent_Editbox_Stacks" relativePoint="RIGHT">
+									<Anchor point="LEFT" relativeTo="$parent_Slider_Stance" relativePoint="RIGHT">
 										<Offset x="10" y="0" />
 									</Anchor>
 								</Anchors>

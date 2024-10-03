@@ -921,6 +921,9 @@ function MPOWA:Edit()
             self.SAVE[self.CurEdit].blendmode)])
     MPowa_ConfigFrame_Container_1_Icon_Texture:SetBlendMode(MPowa_ConfigFrame_Container_1_Slider_BlendMode.valuetext[tnbr(self.SAVE[self.CurEdit].blendmode)])
 
+    MPowa_ConfigFrame_Container_1_2_Slider_Stance:SetValue(tnbr(self.SAVE[self.CurEdit].stance))
+    MPowa_ConfigFrame_Container_1_2_Slider_StanceText:SetText(MPOWA_SLIDER_STANCE .. " " .. MPowa_ConfigFrame_Container_1_2_Slider_Stance.valuetext[tnbr(self.SAVE[self.CurEdit].stance)])
+
     MPowa_ConfigFrame_Container_2_2_Slider_Font:SetValue(tnbr(self.SAVE[self.CurEdit].timerfont))
     MPowa_ConfigFrame_Container_2_2_Slider_FontText:SetText(MPOWA_SLIDER_FONT ..
                                                                 MPowa_ConfigFrame_Container_2_2_Slider_Font.valuetext[tnbr(self.SAVE[self.CurEdit].timerfont)])

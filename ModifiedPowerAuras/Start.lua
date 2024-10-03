@@ -1,74 +1,6 @@
 --------------- Frames and Funktionallity ---------------
 function MPOWA:CreateSave(i)
-  self.SAVE[i] = {
-    texture = "Interface\\AddOns\\ModifiedPowerAuras\\images\\dummy.tga",
-    alpha = 1,
-    size = 0.75,
-    x = 0,
-    y = -30,
-    buffname = "",
-    isdebuff = false,
-    timer = false,
-    inverse = false,
-    used = false,
-    test = false,
-    cooldown = false,
-    enemytarget = false,
-    friendlytarget = false,
-    stacks = ">=0",
-    targetduration = 0,
-    alive = 0,
-    mounted = 0,
-    incombat = 0,
-    inparty = 0,
-    inraid = 0,
-    inbattleground = 0,
-    fontalpha = 1,
-    fontoffsetx = 0,
-    fontoffsety = 0,
-    fontsize = 1.5,
-    hundredth = false,
-    usefontcolor = false,
-    fontcolor_r = 1,
-    fontcolor_g = 1,
-    fontcolor_b = 1,
-    usebeginsound = false,
-    beginsound = 1,
-    useendsound = false,
-    endsound = 1,
-    raidgroupmember = false,
-    exactname = false,
-    flashanim = false,
-    flashanimstart = 5,
-    unit = "player",
-    rgmname = "",
-    icon_r = 1,
-    icon_b = 1,
-    icon_g = 1,
-    secsleft = false,
-    secsleftdur = 0,
-    inraidinstance = 0,
-    hidestacks = false,
-    secondspecifier = false,
-    secondspecifiertext = "",
-    animduration = 0.5,
-    translateoffsetx = 50,
-    translateoffsety = 50,
-    fadealpha = 0.99,
-    scalefactor = 0.8,
-    isdynamicgroup = false,
-    groupnumber = 0,
-    cpstacks = ">=0",
-    dynamicsorted = false,
-    dynamiccenter = false,
-    dynamicorientation = 1,
-    timerfont = 1,
-    dynamicspacing = 5,
-    blendmode = 1,
-    minutes = false,
-    timerfontsize = 1,
-    funct = nil
-  }
+  self.SAVE[i] = MPOWA_AURA_DEFAULT_SETTINGS
 
   local cat = i;
 
@@ -141,6 +73,7 @@ function MPOWA:Init()
   MPowa_Tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 
   SLASH_MPOWA1 = "/mpowa"
+  SLASH_MPOWA2 = "/wa"  -- Added for those of us with Classic/Retail habits
   SlashCmdList["MPOWA"] = function(msg)
     if MPowa_MainFrame:IsVisible() then
       MPowa_MainFrame:Hide()
@@ -238,6 +171,10 @@ function MPOWA:Init()
 
       if not val["timerfontsize"] then
         self.SAVE[cat]["timerfontsize"] = 1
+      end
+
+      if not val["stance"] then
+        self.SAVE[cat]["stance"] = 1
       end
 
       self:CreateIcon(cat, cat)
