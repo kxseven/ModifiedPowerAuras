@@ -1103,14 +1103,14 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										this.valuetext = {"Any", "Battle", "Defensive", "Berserker"}
+										this.valuetext = {"Any", "1", "2", "3","4", "5", "6", "7"}
 										this.aide = MPOWA_SLIDER_STANCE_TOOLTIP
-										this:SetMinMaxValues(1,4)
+										this:SetMinMaxValues(1,7)
 										this:SetValue(1)
 										this:SetValueStep(1)
 										getglobal(this:GetName() .. "Text"):SetText(MPOWA_SLIDER_STANCE)
 										getglobal(this:GetName() .. "Low"):SetText("1")
-										getglobal(this:GetName() .. "High"):SetText("4")
+										getglobal(this:GetName() .. "High"):SetText("7")
 									</OnLoad>
 									<OnValueChanged>
 										if MPOWA.loaded then

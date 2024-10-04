@@ -53,3 +53,33 @@ function MPOWA:GetMinValues(val)
   val = tonumber(val)
   return ceil(val) - 50
 end
+
+function MPOWA:GetTableSize(t)
+    local count = 0
+    for _, _ in pairs(t) do
+        count = count + 1
+    end
+    return count
+end
+
+
+function MPOWA:FormatValue(x)
+    if type(x) == "nil" then
+        return "nil"
+    elseif type(x) == "boolean" then
+        return tostring(x)
+    elseif type(x) == "number" then
+        return tostring(x)
+    elseif type(x) == "string" then
+        return x
+    elseif type(x) == "table" then
+        local result = "{"
+        for k, v in pairs(x) do
+            result = result .. "[" .. tostring(k) .. "] = " .. formatValue(v) .. ", "
+        end
+        result = result .. "}"
+        return result
+    else
+        return "unsupported type"
+    end
+end

@@ -33,7 +33,7 @@ local func_table = {}
 function MPOWA:OnUpdate(elapsed)
   LastUpdate = LastUpdate + elapsed
   if LastUpdate >= UpdateTime then
-    local p1, p2
+    local p1, p2, targetStance
     for cat, val in self.NeedUpdate do
       if val then
         path = self.SAVE[cat]
@@ -42,11 +42,19 @@ function MPOWA:OnUpdate(elapsed)
         end
 
         p1, p2 = self:TernaryReturn(cat, "inparty", self:InParty()), self:TernaryReturn(cat, "inraid", UnitInRaid("player"))
-        if not self.active[cat] and self:TernaryReturn(cat, "alive", self:Reverse(UnitIsDeadOrGhost("player"))) and
-            self:TernaryReturn(cat, "mounted", self.mounted) and self:TernaryReturn(cat, "incombat", UnitAffectingCombat("player")) and
-            (((p1 or p2) and ((path["inparty"] == 0 or path["inparty"] == true) and (path["inraid"] == 0 or path["inraid"] == true))) or (p1 and p2)) and
-            self:TernaryReturn(cat, "inbattleground", self.bg) and self:TernaryReturn(cat, "inraidinstance", self.instance) then
+        targetStance = path["stance"] or 1
+
+        if not self.active[cat] and
+            self:TernaryReturn(cat, "alive", self:Reverse(UnitIsDeadOrGhost("player"))) and
+            self:TernaryReturn(cat, "mounted", self.mounted) and
+            self:TernaryReturn(cat, "incombat", UnitAffectingCombat("player")) and
+            (((p1 or p2) and ((path["inparty"] == 0 or path["inparty"] == true) and
+            (path["inraid"] == 0 or path["inraid"] == true))) or (p1 and p2)) and
+            self:TernaryReturn(cat, "inbattleground", self.bg) and
+            self:TernaryReturn(cat, "inraidinstance", self.instance)
+        then
           self.frames[cat][4]:Hide()
+
           if path["cooldown"] then
             duration = self:GetCooldown(path["buffname"]) or 0
             if path["timer"] then
@@ -115,8 +123,10 @@ function MPOWA:OnUpdate(elapsed)
             end
           end
 
-          if (self.SAVE[cat]["enemytarget"] == true and UnitIsFriend("player", "target")) or (self.SAVE[cat]["inparty"] == true and not self:InParty()) or
-              (self.SAVE[cat]["inraid"] == true and not UnitInRaid("player")) then
+          if (self.SAVE[cat]["enemytarget"] == true and UnitIsFriend("player", "target")) or
+             (self.SAVE[cat]["inparty"] == true and not self:InParty()) or
+             (self.SAVE[cat]["inraid"] == true and not UnitInRaid("player"))
+          then
             self:FHide(cat)
           end
 
@@ -134,6 +144,17 @@ function MPOWA:OnUpdate(elapsed)
               end
             end
           end
+
+          -- If the stance setting is anything other than "ANY" then we need to test if it is currently
+          -- the active stance/form
+          if (targetStance > 1) then
+            if MPOWA:isActiveStance(targetStance) == true then
+              self:FShow(cat)
+            else
+              self:FHide(cat)
+            end
+          end
+
         else
           if path["inverse"] or path["cooldown"] then
             self:FHide(cat)
@@ -141,6 +162,7 @@ function MPOWA:OnUpdate(elapsed)
         end
       end
     end
+
     for cat, val in self.active do
       if val then
         path = self.SAVE[cat]
@@ -148,6 +170,8 @@ function MPOWA:OnUpdate(elapsed)
           return
         end
         text, count = "", 0
+        targetStance = path["stance"] or 1
+
         if (path["unit"] or "player") == "player" then
           count = GetPlayerBuffApplications(val)
         else
@@ -169,6 +193,7 @@ function MPOWA:OnUpdate(elapsed)
             end
           end
         end
+
         if self:IsStacks(count or 0, cat, "stacks") then
           duration = self:GetDuration(val, cat)
           if (count or 0) > 1 and not path["hidestacks"] then
@@ -190,18 +215,23 @@ function MPOWA:OnUpdate(elapsed)
             self:FHide(cat)
           else
             if path["secsleft"] then
-              if duration <= path["secsleftdur"] then
+              if duration <= path["secsleftdur"] and (MPOWA:isActiveStance(targetStance) == true) then
                 self:FShow(cat)
               else
                 self:FHide(cat)
               end
             else
-              self:FShow(cat)
+              if MPOWA:isActiveStance(targetStance) == true then
+                self:FShow(cat)
+              else
+                self:FHide(cat)
+              end
             end
           end
         else
           self:FHide(cat)
         end
+
         if (path["funct"]) then
           local f = func_table[cat]
           if not f then
@@ -216,6 +246,17 @@ function MPOWA:OnUpdate(elapsed)
             end
           end
         end
+
+        -- If the stance setting is anything other than "ANY" then we need to test if it is currently
+        -- the active stance/form
+        -- if (targetStance > 1) then
+        --   if MPOWA:isActiveStance(targetStance) == true then
+        --     self:FShow(cat)
+        --   else
+        --     self:FHide(cat)
+        --   end
+        -- end
+
       else
         if not self.NeedUpdate[cat] then
           self:FHide(cat)
@@ -225,6 +266,26 @@ function MPOWA:OnUpdate(elapsed)
     LastUpdate = 0
   end
 end
+
+
+function MPOWA:isActiveStance(stanceSettingValue)
+  -- Due to the enumerations for selecting a matching stance starting at 1 in the MPOWA GUI
+  -- we need to offset the target stanceID by 1
+  --   in GUI: ID 1 (Any), ID 2 = Battle Stance
+  --   in Game: ID 1 (Battle Stance)
+  if stanceSettingValue == 1 then  -- Matches the "ANY" stance setting
+    return true
+  end
+  local classStanceID = stanceSettingValue - 1
+  local stanceTexture, stanceName, isStanceActive, isStanceCastable = GetShapeshiftFormInfo(classStanceID);
+  if isStanceActive == 1 then
+    MPOWA:Print("Target ClassStance: " .. (classStanceID) .. " isStanceActive: Yes")
+    return true
+  end
+  MPOWA:Print("Target ClassStance: " .. (classStanceID) .. " isStanceActive: No")
+  return false
+end
+
 
 function MPOWA:SetTexture(key, texture, index)
   local p = self.SAVE[key]
