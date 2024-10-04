@@ -279,10 +279,10 @@ function MPOWA:isActiveStance(stanceSettingValue)
   local classStanceID = stanceSettingValue - 1
   local stanceTexture, stanceName, isStanceActive, isStanceCastable = GetShapeshiftFormInfo(classStanceID);
   if isStanceActive == 1 then
-    MPOWA:Print("Target ClassStance: " .. (classStanceID) .. " isStanceActive: Yes")
+    -- MPOWA:Print("Target ClassStance: " .. (classStanceID) .. " isStanceActive: Yes")
     return true
   end
-  MPOWA:Print("Target ClassStance: " .. (classStanceID) .. " isStanceActive: No")
+  -- MPOWA:Print("Target ClassStance: " .. (classStanceID) .. " isStanceActive: No")
   return false
 end
 
