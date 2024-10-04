@@ -423,7 +423,7 @@ function MPOWA:Iterate(unit)
 
   for cat, val in pairs(self.SAVE) do
     if (val["buffname"] == "unitpower") then
-      local unit = arg1
+      local unit = arg1 or ""
       if (unit == "target") then
         self:Push("unitpower", unit, 45, false)
       elseif (string.find(unit, "raid")) then
