@@ -48,8 +48,7 @@ function MPOWA:OnUpdate(elapsed)
             self:TernaryReturn(cat, "alive", self:Reverse(UnitIsDeadOrGhost("player"))) and
             self:TernaryReturn(cat, "mounted", self.mounted) and
             self:TernaryReturn(cat, "incombat", UnitAffectingCombat("player")) and
-            (((p1 or p2) and ((path["inparty"] == 0 or path["inparty"] == true) and
-            (path["inraid"] == 0 or path["inraid"] == true))) or (p1 and p2)) and
+            (((p1 or p2) and ((path["inparty"] == 0 or path["inparty"] == true) and (path["inraid"] == 0 or path["inraid"] == true))) or (p1 and p2)) and
             self:TernaryReturn(cat, "inbattleground", self.bg) and
             self:TernaryReturn(cat, "inraidinstance", self.instance)
         then
