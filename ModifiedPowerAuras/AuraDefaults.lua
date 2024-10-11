@@ -13,6 +13,7 @@ MPOWA_AURA_DEFAULT_SETTINGS = {
   used = false,
   test = false,
   cooldown = false,
+  abilityavailable = false,
   enemytarget = false,
   friendlytarget = false,
   stacks = ">=0",

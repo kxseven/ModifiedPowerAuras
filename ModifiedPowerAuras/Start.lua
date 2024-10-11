@@ -177,6 +177,16 @@ function MPOWA:Init()
         self.SAVE[cat]["stance"] = 1
       end
 
+      if not val["spellslot"] then
+        self.SAVE[cat]["spellslot"] = 1
+      end
+
+      MPOWA:SpellSlot(val)
+
+      if not val["abilityavailable"] then
+        self.SAVE[cat]["abilityavailable"] = false
+      end
+
       self:CreateIcon(cat, cat)
       self:ApplyConfig(cat)
 
@@ -248,6 +258,44 @@ function MPOWA:Init()
   self.testAll = false
 end
 
+
+function MPOWA:SpellSlot(val)
+  if val["buffname"] and val["spellslot"] then
+    val["spellslot"] = 1
+    local spellIndex = 1
+    while true do
+      local name, rank = GetSpellName(spellIndex, "spell")
+      if (not name) or strfind(strlower(name), strlower(val["buffname"])) or name == val["buffname"] then
+        break
+      end
+      if spellIndex > 1000 then
+        spellIndex = 0
+        break -- Lets give up at this point
+      end
+      spellIndex = spellIndex + 1
+    end
+    local spellTexture = GetSpellTexture(spellIndex, "spell")
+    for i = 1, 120 do
+      local slotTexture = GetActionTexture(i)
+      if slotTexture == spellTexture then
+        val["spellslot"] = i
+        return
+      end
+    end
+    return
+  end
+end
+
+
+function MPOWA:GetStanceSlot(val)
+  for i = 1, 6 do
+    local icon, name, active, castable = GetShapeshiftFormInfo(i);
+    if active then
+      return i
+    end
+  end
+  return 0
+end
 --------------- Post Init --------------------------
 
 MPOWA:SetScript("OnUpdate", function()

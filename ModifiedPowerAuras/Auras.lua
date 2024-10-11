@@ -542,6 +542,7 @@ function MPOWA:Push(aura, unit, i, isdebuff)
   end
 end
 
+
 function MPOWA:IsStacks(count, id, kind)
   if self.SAVE[id][kind] ~= "" then
     local a, b = strfind(self.SAVE[id][kind], '[>|=|<|!]*')
@@ -600,4 +601,17 @@ function MPOWA:IsStacks(count, id, kind)
     end
   end
   return false
+end
+
+
+function MPOWA:GetSpellActionSlot(action_name)
+  local spellIndex = self:GetSpellSlot(action_name, "spell")
+  local spellTexture = GetSpellTexture(spellIndex, "spell")
+  for i = 1, 120 do
+    local slotTexture = GetActionTexture(i)
+    if slotTexture == spellTexture then
+      return i
+    end
+  end
+  return 0
 end
