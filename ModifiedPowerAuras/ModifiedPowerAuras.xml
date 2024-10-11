@@ -290,7 +290,7 @@
 	---------------------------------------------MAINFRAME---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	<Frame name="MPowa_MainFrame" movable="true" parent="UIParent" frameStrata="HIGH" hidden="true" enableMouse="true" enableKeyboard="true">
-		<Size x="321" y="430" />
+		<Size x="321" y="480" />
 		<Anchors>
 			<Anchor point="CENTER" relativeTo="UIParent" />
         </Anchors>
@@ -508,7 +508,7 @@
 	---------------------------------------------CONFIGURATION FRAME---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	<Frame name="MPowa_ConfigFrame" movable="true" parent="MPowa_MainFrame" frameStrata="HIGH" hidden="true" enableMouse="true" enableKeyboard="true">
-		<Size x="350" y="450" />
+		<Size x="350" y="480" />
 		<Anchors>
 			<Anchor point="RIGHT" relativeTo="MPowa_MainFrame" relativePoint="LEFT" />
         </Anchors>
@@ -2988,7 +2988,7 @@
 	---------------------------------------------ICON FRAME---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	<Frame name="MPowa_IconFrame" movable="true" parent="MPowa_ConfigFrame" frameStrata="HIGH" hidden="true" enableMouse="true" enableKeyboard="true">
-		<Size x="321" y="430" />
+		<Size x="321" y="480" />
 		<Anchors>
 			<Anchor point="RIGHT" relativeTo="MPowa_ConfigFrame" relativePoint="LEFT" />
         </Anchors>
@@ -3840,7 +3840,7 @@
 	---------------------------------------------PROFILE FRAME---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	<Frame name="MPowa_ProfileFrame" movable="true" parent="MPowa_MainFrame" frameStrata="HIGH" hidden="true" enableMouse="true" enableKeyboard="true">
-		<Size x="321" y="430" />
+		<Size x="321" y="480" />
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="MPowa_MainFrame" relativePoint="RIGHT" />
         </Anchors>
