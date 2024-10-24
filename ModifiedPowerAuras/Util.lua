@@ -83,3 +83,10 @@ function MPOWA:FormatValue(x)
         return "unsupported type"
     end
 end
+
+
+function MPOWA:RegisterSound(label, mpath)
+    local s = MPOWA:GetTableSize(MPOWA.SOUND_ENTRIES)
+    MPOWA.SOUND_ENTRIES[s] = mpath
+    MPOWA:Print("Added idx[" .. s .. "] for " .. mpath)
+end

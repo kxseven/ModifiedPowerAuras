@@ -10,7 +10,6 @@
 ## SavedVariables: MPOWA_PROFILE
 ## SavedVariablesPerCharacter: MPOWA_SAVE
 ## Version: 1.6.0
-
 libs\LibStub\LibStub.lua
 libs\Classy-1.0\Classy-1.0.lua
 libs\Sol\Sol.lua
@@ -23,11 +22,9 @@ libs\AnimationGroup\path.lua
 libs\AnimationGroup\rotation.lua
 libs\AnimationGroup\scale.lua
 libs\AnimationGroup\translation.lua
-
 localization\enUS.lua
 localization\deDE.lua
 localization\ruRU.lua
-
 Init.lua
 Util.lua
 Conditions.lua

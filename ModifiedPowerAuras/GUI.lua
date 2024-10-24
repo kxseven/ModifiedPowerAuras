@@ -1028,7 +1028,7 @@ function MPOWA:SoundSliderChange(obj, var)
     if self.SAVE[self.CurEdit][var] < 16 then
       PlaySound(self.SOUND[self.SAVE[self.CurEdit][var]], "master")
     else
-      PlaySoundFile("Interface\\AddOns\\ModifiedPowerAuras\\Sounds\\" .. self.SOUND[self.SAVE[self.CurEdit][var]], "master")
+      PlaySoundFile("Interface\\AddOns\\ModifiedPowerAuras\\Media\\" .. self.SOUND[self.SAVE[self.CurEdit][var]], "master")
     end
   end
 end
