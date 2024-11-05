@@ -1,4 +1,4 @@
-# Modified Power Auras (MPOWA) 
+# Modified Power Auras (MPOWA)
 
 This repo contains two separate AddOns;
 - the forked Modified Power Auras (MPOWA) project
@@ -7,6 +7,15 @@ This repo contains two separate AddOns;
 ### What is Modified Power Auras? ###
 
 Modified Power Auras is the advanced version of the AddOn Power Auras. It is a lot more powerful and provides every possible function that could be backported from cataclysm. Plus it provides some custom features that are very helpful.
+
+
+### What significant updates and changes have been made to the original?
+
+![example](ModifiedPowerAuras/images/aura_config_example_01.png)
+
+- Bundling of ColorPickerPlus addon to allow HTML based color codes for consistent coloring
+- Added support for Forms/Stances
+
 
 
 ### What are the advantages of Modified Power Auras? ###
@@ -21,33 +30,26 @@ Modified Power Auras is the advanced version of the AddOn Power Auras. It is a l
 * Customize your aura and its position on the whole screen
 * Use a lot new conditions to show/hide auras
 * Play a sound if a aura is applied or fades
-* Have some nice animations  
-* Group them as they appear  
+* Have some nice animations
+* Group them as they appear
 * Set up custom functions to show or hide the aura
 
 
 ### Installing Instructions ###
 
-* Download the AddOn [here](https://github.com/Geigerkind/ModifiedPowerAuras/releases)
-* Rename the unziped folder to "ModifiedPowerAuras"
-* Place the folder into your AddOn directory in your World of Warcraft folder
+* Download the latest release of AddOn [here](https://github.com/kxseven/ModifiedPowerAuras/releases)
+* Extract (or copy) both AddOns into your `Interface/AddOns` directory in your World of Warcraft folder
 * Start the game
-* Type in **/mpowa** to open the configuration frame
+* In-game, you can use `/mpowa` or `/wa` to open the configuration frame
 * Enjoy
 
 
 
-#**Support me!**#   
-1. [report](https://github.com/Geigerkind/ModifiedPowerAuras/issues) bugs that you found.
-2. Suggest improvements in this thread. 
-3. You can also [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=57SWBZ3B7RTTQ) for my projects if you like or consider becoming an [patreon](https://www.patreon.com/legacylogs).
-
-
 ### How does it look like? ###
 
-**All frames opened (Profile/EditAura/IconFrame):**  
+**All frames opened (Profile/EditAura/IconFrame):**
 ![SG2B0jW.jpg](http://i.imgur.com/SG2B0jW.jpg)
 
 
-**Auras on testmode:**  
+**Auras on testmode:**
 ![Testmode](http://i.imgur.com/0CZScUt.png)
